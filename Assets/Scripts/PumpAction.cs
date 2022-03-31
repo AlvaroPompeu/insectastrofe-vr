@@ -6,12 +6,16 @@ public class PumpAction : MonoBehaviour
 {
     private float zBoundary = 2.2f;
 
+    private Shotgun shotgun;
     private AudioSource audioSource;
     [SerializeField] AudioClip pumpActionStartSFX;
     [SerializeField] AudioClip pumpActionEndSFX;
+    [SerializeField] GameObject emptyShellPrefab;
+    [SerializeField] Transform bulletEjector;
 
     void Start()
     {
+        shotgun = GetComponentInParent<Shotgun>();
         audioSource = GetComponent<AudioSource>();
     }
 
@@ -35,10 +39,27 @@ public class PumpAction : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         audioSource.PlayOneShot(pumpActionStartSFX);
+        if (shotgun.hasEmptyShell)
+        {
+            EjectEmptyShell();
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         audioSource.PlayOneShot(pumpActionEndSFX);
+        if (shotgun.magCount > 0)
+        {
+            shotgun.shotReady = true;
+        }
+    }
+
+    private void EjectEmptyShell()
+    {
+        GameObject shell = Instantiate(emptyShellPrefab, bulletEjector.position, bulletEjector.rotation);
+        Rigidbody shellRB = shell.GetComponent<Rigidbody>();
+        shellRB.AddForce(bulletEjector.right * 3, ForceMode.Impulse);
+        Destroy(shell, 15);
+        shotgun.hasEmptyShell = false;
     }
 }

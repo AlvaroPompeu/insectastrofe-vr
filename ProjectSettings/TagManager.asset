@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - LoadingPort
   layers:
   - Default
   - TransparentFX
@@ -11,7 +12,7 @@ TagManager:
   - Dynamic Object
   - Water
   - UI
-  - Second Hand Grab
+  - Ignore Dynamic
   - 
   - 
   - 
