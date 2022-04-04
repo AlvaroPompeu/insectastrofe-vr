@@ -11,8 +11,10 @@ public class Shotgun : MonoBehaviour
     [SerializeField] AudioClip reloadSFX;
     [SerializeField] GameObject bulletDecalVFX;
     [SerializeField] GameObject objectHitVFX;
+    [SerializeField] GameObject bloodVFX;
+    [SerializeField] GameObject sparksVFX;
 
-    private float range = 20f;
+    private float range = 30f;
     private float bulletSpread = 0.05f;
     private int minPelletCount = 8;
     private int maxPelletCount = 12;
@@ -42,21 +44,25 @@ public class Shotgun : MonoBehaviour
             {
                 if (Physics.Raycast(muzzleTransform.position, GenerateRaycastDirection(), out RaycastHit hitInfo, range))
                 {
-                    // Instantiate and destroy (after a delay) the effects if a static object was hit
-                    if (hitInfo.transform.gameObject.isStatic)
-                    {
-                        GameObject decal = Instantiate(bulletDecalVFX, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
-                        GameObject hit = Instantiate(objectHitVFX, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                    GameObject hitObj = hitInfo.transform.gameObject;
+                    string colliderTag = hitInfo.collider.tag;
 
-                        Destroy(decal, 10f);
-                        Destroy(hit, 1f);
+                    // Instantiate and destroy (after a delay) the effects if a static object was hit
+                    if (hitObj.isStatic)
+                    {
+                        AttachDecal(hitInfo);
+                    }
+                    // An enemy was hit
+                    else if(colliderTag == "EnemyHard" || colliderTag == "EnemySoft")
+                    {
+                        HitEnemy(hitInfo, colliderTag);
                     }
                 }
             }
 
             // Spend ammo and disable the gun
-            magCount--;
-            shotReady = false;
+            //magCount--;
+            //shotReady = false;
             hasEmptyShell = true;
         }
         else
@@ -73,6 +79,37 @@ public class Shotgun : MonoBehaviour
         Vector3 endPoint = startPoint + muzzleTransform.forward + spreadVector;
 
         return (endPoint - startPoint);
+    }
+
+    private void AttachDecal(RaycastHit hitInfo)
+    {
+        GameObject decal = Instantiate(bulletDecalVFX, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+        GameObject hit = Instantiate(objectHitVFX, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+
+        Destroy(decal, 10f);
+        Destroy(hit, 1f);
+    }
+
+    private void HitEnemy(RaycastHit hitInfo, string hitType)
+    {
+        GameObject hitEffect;
+        Enemy enemy = hitInfo.transform.gameObject.GetComponent<Enemy>();
+
+
+        // A hard part was hit
+        if (hitType == "EnemyHard")
+        {
+            hitEffect = Instantiate(sparksVFX, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+            enemy.PlayHardHitSFX();
+        }
+        // A soft part was hit
+        else
+        {
+            hitEffect = Instantiate(bloodVFX, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+            enemy.TakeDamage();
+        }
+
+        Destroy(hitEffect, 1f);
     }
 
     public bool LoadBullet()
