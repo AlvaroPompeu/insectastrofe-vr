@@ -93,7 +93,7 @@ public class Shotgun : MonoBehaviour
     private void HitEnemy(RaycastHit hitInfo, string hitType)
     {
         GameObject hitEffect;
-        Enemy enemy = hitInfo.transform.gameObject.GetComponent<Enemy>();
+        EnemyController enemy = hitInfo.transform.gameObject.GetComponent<EnemyController>();
 
 
         // A hard part was hit
