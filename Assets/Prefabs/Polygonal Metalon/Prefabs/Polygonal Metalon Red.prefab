@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: -8273069015360112301}
   - component: {fileID: -7065335429159508946}
   - component: {fileID: 4958414727244323079}
+  - component: {fileID: -238912618164488367}
   m_Layer: 0
   m_Name: Polygonal Metalon Red
   m_TagString: Untagged
@@ -317,6 +318,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugTransform: {fileID: 0}
   bulletOnMetalSFX: {fileID: 8300000, guid: 2443395a204689f478ed52d265cdf7e5, type: 3}
+--- !u!195 &-238912618164488367
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128758269040250}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 2
+  m_Speed: 6
+  m_Acceleration: 18
+  avoidancePriority: 50
+  m_AngularSpeed: 720
+  m_StoppingDistance: 4
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: -0.34
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 0
 --- !u!1 &1130806907750044
 GameObject:
   m_ObjectHideFlags: 0
