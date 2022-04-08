@@ -209,8 +209,9 @@ public class EnemyController : MonoBehaviour
 
     private void Die()
     {
-        animator.SetTrigger("Die");
-        Destroy(gameObject, 20f);
         isDead = true;
+        Destroy(gameObject, 20f);
+        this.enabled = false;
+        animator.SetTrigger("Die");
     }
 }

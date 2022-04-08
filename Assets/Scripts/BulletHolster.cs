@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class BulletHolster : MonoBehaviour
 {
     [SerializeField] GameObject mainCamera;
+    [SerializeField] GameObject shellPrefab;
+    [SerializeField] GameObject[] sockets;
 
     private float baseRotateSpeed = 50f;
     private float yOffset = 0.55f;
@@ -40,6 +43,20 @@ public class BulletHolster : MonoBehaviour
         else
         {
             return (baseRotateSpeed * 2);
+        }
+    }
+
+    public void RefillBelt()
+    {
+        for (int i = 0; i < sockets.Length; i++)
+        {
+            // Check if the socket is empty
+            IXRSelectInteractable obj = sockets[i].GetComponent<XRSocketInteractor>().GetOldestInteractableSelected();
+            if (obj == null)
+            {
+                // Instantiate the shell in the socket position
+                Instantiate(shellPrefab, sockets[i].transform.position, sockets[i].transform.rotation);
+            }
         }
     }
 }
