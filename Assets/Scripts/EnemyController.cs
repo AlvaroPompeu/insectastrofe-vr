@@ -7,7 +7,6 @@ public class EnemyController : MonoBehaviour
 {
     private int maxHealth = 8;
     private int currentHealth;
-    private bool isDead = false;
     private bool rotateToPlayer = false;
     private bool attackReady = true;
     private bool patrolReady = true;
@@ -29,6 +28,7 @@ public class EnemyController : MonoBehaviour
     public Transform debugTransform;
 
     [SerializeField] AudioClip bulletOnMetalSFX;
+    [SerializeField] RagdollHelper ragdoll;
 
     void Start()
     {
@@ -186,19 +186,16 @@ public class EnemyController : MonoBehaviour
 
     public void TakeDamage()
     {
-        if (!isDead)
+        // Each pellet does 1 damage
+        currentHealth--;
+        if (currentHealth == 0)
         {
-            // Each pellet does 1 damage
-            currentHealth--;
-            if (currentHealth == 0)
-            {
-                Die();
-            }
-            // Play the hit animation
-            else
-            {
-                animator.SetTrigger("Take Damage");
-            }
+            Die();
+        }
+        // Play the hit animation
+        else
+        {
+            animator.SetTrigger("Take Damage");
         }
     }
 
@@ -209,9 +206,9 @@ public class EnemyController : MonoBehaviour
 
     private void Die()
     {
-        isDead = true;
-        Destroy(gameObject, 20f);
+        // Stop running the update method
         this.enabled = false;
-        animator.SetTrigger("Die");
+        ragdoll.ToggleToRagdoll(transform.position, transform.rotation);
+        gameObject.SetActive(false);
     }
 }

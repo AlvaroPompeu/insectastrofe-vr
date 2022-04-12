@@ -61,8 +61,8 @@ public class Shotgun : MonoBehaviour
             }
 
             // Spend ammo and disable the gun
-            magCount--;
-            shotReady = false;
+            //magCount--;
+            //shotReady = false;
             hasEmptyShell = true;
         }
         else
@@ -95,18 +95,36 @@ public class Shotgun : MonoBehaviour
         GameObject hitEffect;
         EnemyController enemy = hitInfo.transform.gameObject.GetComponent<EnemyController>();
 
-
         // A hard part was hit
         if (hitType == "EnemyHard")
         {
             hitEffect = Instantiate(sparksVFX, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
-            enemy.PlayHardHitSFX();
+            if (enemy)
+            {
+                enemy.PlayHardHitSFX();
+            }
+            // A dead enemy was hit, so it is a ragdoll
+            else
+            {
+                RagdollHelper ragdoll = hitInfo.transform.gameObject.GetComponentInParent<RagdollHelper>();
+                ragdoll.PlayHardHitSFX();
+                ragdoll.PushBack(hitInfo.rigidbody, -hitInfo.normal);
+            }
         }
         // A soft part was hit
         else
         {
             hitEffect = Instantiate(bloodVFX, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
-            enemy.TakeDamage();
+            if (enemy)
+            {
+                enemy.TakeDamage();
+            }
+            // A dead enemy was hit, so it is a ragdoll
+            else
+            {
+                RagdollHelper ragdoll = hitInfo.transform.gameObject.GetComponentInParent<RagdollHelper>();
+                ragdoll.PushBack(hitInfo.rigidbody, -hitInfo.normal);
+            }
         }
 
         Destroy(hitEffect, 1f);
