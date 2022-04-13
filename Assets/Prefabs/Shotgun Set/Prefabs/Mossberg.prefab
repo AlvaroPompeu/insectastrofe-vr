@@ -819,7 +819,7 @@ GameObject:
   - component: {fileID: 3167446563138821593}
   m_Layer: 0
   m_Name: PumpActionTrigger
-  m_TagString: Untagged
+  m_TagString: PumpAction
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

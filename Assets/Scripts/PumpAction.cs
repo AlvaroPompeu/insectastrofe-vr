@@ -38,19 +38,25 @@ public class PumpAction : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        audioSource.PlayOneShot(pumpActionStartSFX);
-        if (shotgun.hasEmptyShell)
+        if (other.gameObject.CompareTag("PumpAction"))
         {
-            EjectEmptyShell();
+            audioSource.PlayOneShot(pumpActionStartSFX);
+            if (shotgun.hasEmptyShell)
+            {
+                EjectEmptyShell();
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        audioSource.PlayOneShot(pumpActionEndSFX);
-        if (shotgun.magCount > 0)
+        if (other.gameObject.CompareTag("PumpAction"))
         {
-            shotgun.shotReady = true;
+            audioSource.PlayOneShot(pumpActionEndSFX);
+            if (shotgun.magCount > 0)
+            {
+                shotgun.shotReady = true;
+            }
         }
     }
 
