@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
+    [SerializeField]
     private int maxHealth = 8;
     private int currentHealth;
     private bool rotateToPlayer = false;

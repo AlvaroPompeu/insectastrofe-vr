@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 4806483955316456}
   - component: {fileID: 33902438609876930}
   - component: {fileID: 23590653784144020}
-  - component: {fileID: 64319456199700308}
+  - component: {fileID: 1609730405439015528}
+  - component: {fileID: 2591327108005824886}
   m_Layer: 0
   m_Name: SM_Env_Fence_Wood_Gate_01
   m_TagString: Untagged
@@ -83,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &64319456199700308
-MeshCollider:
+--- !u!65 &1609730405439015528
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -93,10 +94,22 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 43022874323790348, guid: aeca2a10851622d479d4deffd72721d4, type: 2}
+  serializedVersion: 2
+  m_Size: {x: 1.5035316, y: 2.1075165, z: 0.26625732}
+  m_Center: {x: -1.81815, y: 1.0445029, z: -0.06327392}
+--- !u!65 &2591327108005824886
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195577681424524}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.14291596, y: 2.1075165, z: 0.26625732}
+  m_Center: {x: -0.0015410185, y: 1.0445029, z: -0.06327392}
 --- !u!1 &1325938307613828
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,6 +121,7 @@ GameObject:
   - component: {fileID: 4098491022605954}
   - component: {fileID: 33388062211615924}
   - component: {fileID: 23901970053140186}
+  - component: {fileID: 648531023576529077}
   m_Layer: 0
   m_Name: SM_Fence_Wood_Gate_02
   m_TagString: Untagged
@@ -178,3 +192,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &648531023576529077
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325938307613828}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0639635, y: 2.3677502, z: 0.13969482}
+  m_Center: {x: 0.53198165, y: 0.9753582, z: 0.02106312}
