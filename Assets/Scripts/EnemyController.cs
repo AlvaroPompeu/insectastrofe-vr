@@ -38,6 +38,9 @@ public class EnemyController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         attackRadius = navMeshAgent.stoppingDistance;
+
+        // Later this will be the player
+        debugTransform = GameObject.Find("DebugTarget").transform;
     }
 
     void Update()
