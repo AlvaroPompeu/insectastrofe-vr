@@ -12,7 +12,7 @@ public class EnemyController : MonoBehaviour
     private bool attackReady = true;
     private bool patrolReady = true;
     private bool withinAttackRadius = false;
-    private float attackAngle = 20f;
+    private float attackAngle = 30f;
     private float patrolRate = 5f;
     private float patrolRange = 20f;
     private float attackRadius;
@@ -24,9 +24,8 @@ public class EnemyController : MonoBehaviour
     private Animator animator;
     private AudioSource audioSource;
     private NavMeshAgent navMeshAgent;
-
-    // Later this will be the player
-    public Transform debugTransform;
+    private Transform playerBody;
+    private MetalonHorn horn;
 
     [SerializeField] AudioClip bulletOnMetalSFX;
     [SerializeField] RagdollHelper ragdoll;
@@ -38,9 +37,8 @@ public class EnemyController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         attackRadius = navMeshAgent.stoppingDistance;
-
-        // Later this will be the player
-        debugTransform = GameObject.Find("DebugTarget").transform;
+        playerBody = GameObject.Find("PlayerBody").transform;
+        horn = GetComponentInChildren<MetalonHorn>();
     }
 
     void Update()
@@ -59,8 +57,7 @@ public class EnemyController : MonoBehaviour
         // If the player is within attack range, this parameter will be true (except during the attack animation)
         if (rotateToPlayer)
         {
-            // Later this will be the player
-            RotateToPlayer(debugTransform);
+            RotateToPlayer(playerBody);
         }
 
         // Update movement animation
@@ -69,7 +66,7 @@ public class EnemyController : MonoBehaviour
 
     private void HandleAction()
     {
-        distanceFromPlayer = Vector3.Distance(transform.position, debugTransform.position);
+        distanceFromPlayer = Vector3.Distance(transform.position, playerBody.position);
         
         if (distanceFromPlayer <= attackRadius)
         {
@@ -102,12 +99,14 @@ public class EnemyController : MonoBehaviour
         }
 
         // The attack will only occur when the player is within the attack angle
-        if (attackReady && WithinAngle(debugTransform, attackAngle))
+        if (attackReady && WithinAngle(playerBody, attackAngle))
         {
             attackReady = false;
             // Disable the rotation towards the player during the attack animation
             rotateToPlayer = false;
             animator.SetTrigger("Stab Attack");
+            //Enable the collider so the horn can hit the player
+            horn.OpenCollider();
             StartCoroutine(attackCooldown());
         }
     }
@@ -115,8 +114,9 @@ public class EnemyController : MonoBehaviour
     // Checks if the target is within the given angle
     private bool WithinAngle(Transform target, float angle)
     {
-        Vector3 direction = (target.position - transform.position).normalized;
-        float currentAngle = Vector3.Angle(direction, transform.forward);
+        // Discard the Y axis when calculating the angle
+        Vector3 direction = (new Vector3(target.position.x, 0, target.position.z) - new Vector3(transform.position.x, 0, transform.position.z)).normalized;
+        float currentAngle = Vector3.Angle(direction, new Vector3(transform.forward.x, 0, transform.forward.z));
 
         if (currentAngle <= angle)
         {
@@ -149,8 +149,7 @@ public class EnemyController : MonoBehaviour
 
     private void ChasePlayer()
     {
-        // Later this will be the player
-        navMeshAgent.SetDestination(debugTransform.position);
+        navMeshAgent.SetDestination(playerBody.position);
     }
 
     private void Patrol()

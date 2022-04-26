@@ -61,8 +61,8 @@ public class Shotgun : MonoBehaviour
             }
 
             // Spend ammo and disable the gun
-            magCount--;
-            shotReady = false;
+            //magCount--;
+            //shotReady = false;
             hasEmptyShell = true;
         }
         else
