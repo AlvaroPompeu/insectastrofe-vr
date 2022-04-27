@@ -39,7 +39,7 @@ public class TeleportationController : MonoBehaviour
 
     private void TeleportModeActivate(InputAction.CallbackContext obj)
     {
-        if (teleportReady)
+        if (teleportReady && GameManager.Instance.IsGameActive)
         {
             onTeleportActivate.Invoke();
             originalPosition = XROrigin.position;

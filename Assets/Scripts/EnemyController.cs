@@ -209,6 +209,9 @@ public class EnemyController : MonoBehaviour
 
     private void Die()
     {
+        // Increment the kill count
+        GameManager.Instance.metalonKillCount++;
+
         // Stop running the update method
         this.enabled = false;
         ragdoll.ToggleToRagdoll(transform.position, transform.rotation);

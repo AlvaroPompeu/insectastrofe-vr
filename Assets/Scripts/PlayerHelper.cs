@@ -76,6 +76,7 @@ public class PlayerHelper : MonoBehaviour
     {
         isDead = true;
 
-        // Display GAME OVER screen
+        // Display the game over screen
+        GameManager.Instance.EnableGameOverScreen();
     }
 }
