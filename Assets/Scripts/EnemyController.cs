@@ -16,7 +16,10 @@ public class EnemyController : MonoBehaviour
     private float patrolRate = 5f;
     private float patrolRange = 20f;
     private float attackRadius;
-    private float chaseRadius = 15f;
+    public float chaseRadius;
+    private float normalChaseRadius = 15f;
+    private float enragedChaseRadius = 35f;
+    private float enrageTimer = 0;
     private float distanceFromPlayer;
     private float attackRate = 1f;
     private float decisionRate = 0.5f;
@@ -39,6 +42,8 @@ public class EnemyController : MonoBehaviour
         attackRadius = navMeshAgent.stoppingDistance;
         playerBody = GameObject.Find("PlayerBody").transform;
         horn = GetComponentInChildren<MetalonHorn>();
+
+        chaseRadius = normalChaseRadius;
     }
 
     void Update()
@@ -53,6 +58,18 @@ public class EnemyController : MonoBehaviour
         {
             decisionRate -= Time.deltaTime;
         }
+
+        // Manage the enrage chase radius
+        if (enrageTimer <= 0)
+        {
+            // Reset the chase radius
+            chaseRadius = normalChaseRadius;
+        }
+        else
+        {
+            enrageTimer -= Time.deltaTime;
+        }
+
 
         // If the player is within attack range, this parameter will be true (except during the attack animation)
         if (rotateToPlayer)
@@ -189,6 +206,9 @@ public class EnemyController : MonoBehaviour
 
     public void TakeDamage()
     {
+        // Enrage the enemy
+        Enrage();
+
         // Each pellet does 1 damage
         currentHealth--;
         if (currentHealth == 0)
@@ -204,7 +224,16 @@ public class EnemyController : MonoBehaviour
 
     public void PlayHardHitSFX()
     {
+        // Enrage the enemy
+        Enrage();
+
         audioSource.PlayOneShot(bulletOnMetalSFX);
+    }
+    
+    private void Enrage()
+    {
+        chaseRadius = enragedChaseRadius;
+        enrageTimer = 5f;
     }
 
     private void Die()
