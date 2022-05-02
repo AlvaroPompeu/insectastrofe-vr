@@ -42,7 +42,11 @@ public class Shotgun : MonoBehaviour
             int pelletCount = Random.Range(minPelletCount, maxPelletCount);
             for (int i = 0; i < pelletCount; i++)
             {
-                if (Physics.Raycast(muzzleTransform.position, GenerateRaycastDirection(), out RaycastHit hitInfo, range))
+                // Make the shoot ignore the Ground Layer
+                int layerMask = 1 << LayerMask.NameToLayer("Ground");
+                layerMask = ~layerMask;
+
+                if (Physics.Raycast(muzzleTransform.position, GenerateRaycastDirection(), out RaycastHit hitInfo, range, layerMask))
                 {
                     GameObject hitObj = hitInfo.transform.gameObject;
                     string colliderTag = hitInfo.collider.tag;

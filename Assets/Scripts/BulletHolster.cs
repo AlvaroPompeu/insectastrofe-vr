@@ -8,9 +8,16 @@ public class BulletHolster : MonoBehaviour
     [SerializeField] GameObject mainCamera;
     [SerializeField] GameObject shellPrefab;
     [SerializeField] GameObject[] sockets;
+    [SerializeField] AudioClip ammoPickupSFX;
 
+    private AudioSource audioSource;
     private float baseRotateSpeed = 50f;
     private float yOffset = 0.55f;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     // Update is called once per frame
     void LateUpdate()
@@ -48,6 +55,8 @@ public class BulletHolster : MonoBehaviour
 
     public void RefillBelt()
     {
+        audioSource.PlayOneShot(ammoPickupSFX);
+
         for (int i = 0; i < sockets.Length; i++)
         {
             // Check if the socket is empty

@@ -12,6 +12,7 @@ public class EnemyController : MonoBehaviour
     private bool attackReady = true;
     private bool patrolReady = true;
     private bool withinAttackRadius = false;
+    private bool isMoving = false;
     private float attackAngle = 30f;
     private float patrolRate = 5f;
     private float patrolRange = 20f;
@@ -31,6 +32,7 @@ public class EnemyController : MonoBehaviour
     private MetalonHorn horn;
 
     [SerializeField] AudioClip bulletOnMetalSFX;
+    [SerializeField] AudioClip attackSFX;
     [SerializeField] RagdollHelper ragdoll;
 
     void Start()
@@ -77,8 +79,9 @@ public class EnemyController : MonoBehaviour
             RotateToPlayer(playerBody);
         }
 
-        // Update movement animation
+        // Update movement animation and sound
         animator.SetFloat("Speed", navMeshAgent.velocity.magnitude);
+        HandleFootstepSound(navMeshAgent.velocity.magnitude);
     }
 
     private void HandleAction()
@@ -103,6 +106,24 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    private void HandleFootstepSound(float velocity)
+    {
+        // The enemy started to move
+        if ((velocity != 0) && !isMoving)
+        {
+            // Play the footstep sound
+            audioSource.Play();
+            isMoving = true;
+        }
+        // The enemy stopped to move
+        else if ((velocity == 0) && isMoving)
+        {
+            // Stop the footstep sound
+            audioSource.Stop();
+            isMoving = false;
+        }
+    }
+
     private void Attack()
     {
         // Make the enemy stop moving before attacking
@@ -122,6 +143,7 @@ public class EnemyController : MonoBehaviour
             // Disable the rotation towards the player during the attack animation
             rotateToPlayer = false;
             animator.SetTrigger("Stab Attack");
+            audioSource.PlayOneShot(attackSFX);
             //Enable the collider so the horn can hit the player
             horn.OpenCollider();
             StartCoroutine(attackCooldown());
